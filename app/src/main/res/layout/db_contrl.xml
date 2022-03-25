@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".database.db">
+
+    <Button
+        android:id="@+id/btnCreateDataBase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CreateDataBase"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnAddData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="AddData"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@+id/btnCreateDataBase" />
+
+    <Button
+        android:id="@+id/btnUpdateData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="UpdateData"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddData" />
+
+    <Button
+        android:id="@+id/btnDeleteData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DeleteData"
+        app:layout_constraintTop_toBottomOf="@+id/btnUpdateData" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnQueryData"
+        android:text="Query Data"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@+id/btnDeleteData"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
