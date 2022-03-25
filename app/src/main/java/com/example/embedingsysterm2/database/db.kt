@@ -50,34 +50,36 @@ class db :Fragment() {
         queryList = root.findViewById(R.id.querylist)
 
         this.context?.let {
-            val dbHelper = dbHelper(it, "AdminUsrStore.db", 1)
+            val dbHelper = dbHelper(it, "UsersStore.db", 3)
 
             btnAddData.setOnClickListener {
                 val db = dbHelper.writableDatabase
                 val Values = ContentValues().apply {
                     put("name", "The Da Vinci Code")
+                    put("mobile", "12345679")
                     put("password", "123456789")
                 }
-                db.insert("AdminUsr", null, Values)
+                db.insert("Users", null, Values)
             }
             btnUpdateData.setOnClickListener {
                 val db = dbHelper.writableDatabase
-                val values = ContentValues()
-                values.put("password", "123456789")
-                db.update("AdminUsr", values, "name=?", arrayOf("The Da Vinci Code"))
+                val Values = ContentValues()
+                Values.put("password", "7654321")
+                db.update("Users", Values, "name=?", arrayOf("The Da Vinci Code"))
             }
             btnDeleteData.setOnClickListener {
                 val db = dbHelper.writableDatabase
-                db.delete("AdminUsr", "name=?", arrayOf("The Da Vinci Code"))
+                db.delete("Users", "name=?", arrayOf("The Da Vinci Code"))
             }
 
             btnQueryData.setOnClickListener {
                 val db = dbHelper.writableDatabase
                 var queryList_str: MutableList<String> = arrayListOf()
-                val cursor = db.query("AdminUsr", null, null, null, null, null, null)
+                val cursor = db.query("Users", null, null, null, null, null, null)
                 if (cursor.moveToFirst()) {
                     do {
                         var name: String = String()
+                        var moblie: String = String()
                         var password: String = String()
                         cursor.getColumnIndex("name")?.let {
                             name = cursor.getString(it)
@@ -85,7 +87,10 @@ class db :Fragment() {
                         cursor.getColumnIndex("password")?.let {
                             password = cursor.getString(it)
                         }
-                        queryList_str.add("name:" + name + "    password:" + password)
+                        cursor.getColumnIndex("mobile")?.let {
+                            moblie = cursor.getString(it)
+                        }
+                        queryList_str.add("name:" + name + "\nmoblie:"+moblie+"\npassword:" + password)
                     } while (cursor.moveToNext())
                 }
                 cursor.close()
@@ -106,10 +111,21 @@ class db :Fragment() {
                         val mobile = registerView.mobile.getText().toString().trim()
                         val password1 = registerView.password1.getText().toString().trim()
                         val password2 = registerView.password2.getText().toString().trim()
-                        println(name)
-                        println(mobile)
-                        println(password1)
-                        println(password2)
+                        if(password1==password2)
+                        {
+                            val db = dbHelper.writableDatabase
+                            val Values = ContentValues().apply {
+                                put("name", name)
+                                put("mobile", mobile)
+                                put("password", password1)
+                            }
+                            db.insert("Users", null, Values)
+                            Toast.makeText(this.context, "注册成功", Toast.LENGTH_LONG).show()
+                        }
+                        else
+                        {
+                            Toast.makeText(this.context, "两次输入密码不一致", Toast.LENGTH_LONG).show()
+                        }
                     })
                     registerView.showAtLocation(
                         root.findViewById(R.id.linearLayout),

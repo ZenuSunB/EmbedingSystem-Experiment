@@ -11,6 +11,12 @@
     android:paddingBottom="40dp"
     android:paddingTop="40dp">
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:minHeight="45dp"
+        android:textSize="20sp"/>
     <EditText
         android:id="@+id/text_name"
         android:layout_width="fill_parent"
