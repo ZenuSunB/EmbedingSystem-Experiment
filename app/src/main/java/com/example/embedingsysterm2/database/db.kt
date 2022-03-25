@@ -1,25 +1,33 @@
 package com.example.embedingsysterm2.database
+
+import android.R.attr.data
 import android.content.ContentValues
 import android.database.*
 import android.database.sqlite.*
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ListView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.example.embedingsysterm2.R
 import androidx.fragment.app.Fragment
+import com.example.embedingsysterm2.R
 import com.example.embedingsysterm2.databinding.DbContrlBinding
-class db :Fragment(){
-    lateinit var btnCreateDataBase : Button//数据库创建按钮控件
-    lateinit var btnAddData : Button//数据库添加元素按钮控件
-    lateinit var btnUpdateData : Button//数据库更新元素按钮控件
-    lateinit var btnDeleteData : Button//数据库删除元素按钮控件
-    lateinit var btnQueryData : Button//数据库查询元素按钮控件
+import com.example.embedingsysterm2.ui.register.RegisterView
 
+
+class db :Fragment() {
+    lateinit var btnAddData: Button//数据库添加元素按钮控件
+    lateinit var btnUpdateData: Button//数据库更新元素按钮控件
+    lateinit var btnDeleteData: Button//数据库删除元素按钮控件
+    lateinit var btnQueryData: Button//数据库查询元素按钮控件
+
+    lateinit var queryList: ListView
+    lateinit var btnRegister: Button//用户注册元素按钮控件
     private var _binding: DbContrlBinding? = null
 
     // This property is only valid between onCreateView and
@@ -30,64 +38,90 @@ class db :Fragment(){
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ):View{
-
+    ): View {
         _binding = DbContrlBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        btnCreateDataBase=root.findViewById(R.id.btnCreateDataBase)
-        btnAddData=root.findViewById(R.id.btnAddData)
-        btnUpdateData=root.findViewById(R.id.btnUpdateData)
-        btnDeleteData=root.findViewById(R.id.btnDeleteData)
-        btnQueryData=root.findViewById(R.id.btnQueryData)
-        this.context?.let {
-            val dbHelper=dbHelper(it,"AdminUsrStore.db",1)
+        btnAddData = root.findViewById(R.id.btnAddData)
+        btnUpdateData = root.findViewById(R.id.btnUpdateData)
+        btnDeleteData = root.findViewById(R.id.btnDeleteData)
+        btnQueryData = root.findViewById(R.id.btnQueryData)
 
-            btnCreateDataBase.setOnClickListener {
-                dbHelper.writableDatabase
-            }
+        btnRegister = root.findViewById(R.id.Register)
+        queryList = root.findViewById(R.id.querylist)
+
+        this.context?.let {
+            val dbHelper = dbHelper(it, "AdminUsrStore.db", 1)
+
             btnAddData.setOnClickListener {
-                val db=dbHelper.writableDatabase
-                val Values=ContentValues().apply {
-                    put("name","The Da Vinci Code")
-                    put("password","123456789")
+                val db = dbHelper.writableDatabase
+                val Values = ContentValues().apply {
+                    put("name", "The Da Vinci Code")
+                    put("password", "123456789")
                 }
-                db.insert("AdminUsr",null,Values)
+                db.insert("AdminUsr", null, Values)
             }
             btnUpdateData.setOnClickListener {
-                val db=dbHelper.writableDatabase
-                val values=ContentValues()
-                values.put("password","123456789")
-                db.update("AdminUsr",values,"name=?", arrayOf("The Da Vinci Code"))
+                val db = dbHelper.writableDatabase
+                val values = ContentValues()
+                values.put("password", "123456789")
+                db.update("AdminUsr", values, "name=?", arrayOf("The Da Vinci Code"))
             }
             btnDeleteData.setOnClickListener {
-                val db=dbHelper.writableDatabase
-                db.delete("AdminUsr","name=?", arrayOf("The Da Vinci Code"))
+                val db = dbHelper.writableDatabase
+                db.delete("AdminUsr", "name=?", arrayOf("The Da Vinci Code"))
             }
+
             btnQueryData.setOnClickListener {
-                val db=dbHelper.writableDatabase
-                val cursor=db.query("AdminUsr",null,null,null,null,null,null)
-                if (cursor.moveToFirst()){
+                val db = dbHelper.writableDatabase
+                var queryList_str: MutableList<String> = arrayListOf()
+                val cursor = db.query("AdminUsr", null, null, null, null, null, null)
+                if (cursor.moveToFirst()) {
                     do {
-                        var name:String= String()
-                        var password:String= String()
+                        var name: String = String()
+                        var password: String = String()
                         cursor.getColumnIndex("name")?.let {
-                            name=cursor.getString(it)
-                            Log.d("MainActivity","name name is "+name)
+                            name = cursor.getString(it)
                         }
                         cursor.getColumnIndex("password")?.let {
-                            password=cursor.getString(it)
-                            Log.d("MainActivity","password is "+password)
+                            password = cursor.getString(it)
                         }
-                        Toast.makeText(this.context ,name+" : "+password,Toast.LENGTH_LONG).show()
-                    }while (cursor.moveToNext())
+                        queryList_str.add("name:" + name + "    password:" + password)
+                    } while (cursor.moveToNext())
                 }
                 cursor.close()
+                var adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                    requireContext(),
+                    android.R.layout.simple_list_item_1,
+                    queryList_str
+                )
+                queryList.setAdapter(adapter)
             }
 
-        }
 
+            btnRegister.setOnClickListener {
+                val registerView = RegisterView()
+                activity?.let {
+                    registerView.CreateRegisterPopWindow(it, View.OnClickListener {
+                        val name = registerView.name.getText().toString().trim()
+                        val mobile = registerView.mobile.getText().toString().trim()
+                        val password1 = registerView.password1.getText().toString().trim()
+                        val password2 = registerView.password2.getText().toString().trim()
+                        println(name)
+                        println(mobile)
+                        println(password1)
+                        println(password2)
+                    })
+                    registerView.showAtLocation(
+                        root.findViewById(R.id.linearLayout),
+                        Gravity.CENTER,
+                        0,
+                        0
+                    )
+                }
+            }
+        }
         return root
     }
-
-
 }
+
+

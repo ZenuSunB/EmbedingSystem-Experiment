@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_user_dialog_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/setbar_bg"
+    android:minWidth="200dp"
+    android:orientation="vertical"
+    android:divider="@drawable/divideline"
+    android:padding="25dp"
+    android:paddingBottom="40dp"
+    android:paddingTop="40dp">
+
+    <EditText
+        android:id="@+id/text_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="name"
+        android:minHeight="45dp"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/text_mobile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="phone"
+        android:minHeight="45dp"
+
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/text_password1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="password"
+        android:minHeight="45dp"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/text_password2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="password"
+        android:minHeight="45dp"
+        android:textSize="18sp" />
+    <Button
+        android:id="@+id/Register"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:textAllCaps="false" />
+
+</LinearLayout>
