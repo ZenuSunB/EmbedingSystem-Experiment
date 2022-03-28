@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.embedingsysterm2.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_QRcode"
+        android:name="com.example.embedingsysterm2.ui.qrcode.QrcodeFragment"
+        android:label="@string/title_QRcode"
+        tools:layout="@layout/qr_view" />
 
     <fragment
         android:id="@+id/navigation_notifications"

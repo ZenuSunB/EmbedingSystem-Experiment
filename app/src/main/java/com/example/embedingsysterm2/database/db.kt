@@ -1,11 +1,10 @@
 package com.example.embedingsysterm2.database
 
-import android.R.attr.data
+
 import android.content.ContentValues
-import android.database.*
-import android.database.sqlite.*
+
 import android.os.Bundle
-import android.util.Log
+
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
