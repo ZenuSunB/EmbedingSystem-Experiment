@@ -1,9 +1,7 @@
-package com.example.embedingsysterm2.ui.register
+package com.example.embedingsysterm2.ui.popview
 
 
-import android.app.Activity
 import android.content.Context
-import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -15,10 +13,10 @@ import com.example.embedingsysterm2.R
 
 
 class RegisterView :PopupWindow () {
-
     private var mContext: Context?=null
     lateinit var view:View
     lateinit var btnRegister : Button
+    lateinit var btnReturn : Button
     lateinit var name : EditText
     lateinit var mobile : EditText
     lateinit var password1 : EditText
@@ -33,9 +31,11 @@ class RegisterView :PopupWindow () {
         mobile=view.findViewById(R.id.text_mobile)
         password1=view.findViewById(R.id.text_password1)
         password2=view.findViewById(R.id.text_password2)
-
+        btnReturn=view.findViewById(R.id.returnbtn)
         btnRegister=view.findViewById(R.id.Register)
-
+        btnReturn.setOnClickListener {
+            dismiss()
+        }
         btnRegister.setOnClickListener(handlerOnClick)
         // 设置外部可点击
         this.setOutsideTouchable(true);

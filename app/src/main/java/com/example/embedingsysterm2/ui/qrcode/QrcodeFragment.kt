@@ -48,7 +48,6 @@ class QrcodeFragment : Fragment() {
         }
         generateQRCodeButton.setOnClickListener{
             try {
-
                 val contentString = qrStrEditText?.getText().toString()
                 if (contentString != "") {
                     val qrCodeBitmap: Bitmap = EncodingHandler.createQRCode(contentString, 350)

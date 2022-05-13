@@ -10,15 +10,21 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.embedingsysterm2.databinding.ActivityMainBinding
 import com.facebook.stetho.Stetho
 
-class MainActivity : AppCompatActivity() {
 
+class MainActivity : AppCompatActivity() {
+//    companion object{
+//        init {
+//            System.loadLibrary("print")
+//        }
+//    }
+//
+//    external fun print():String;
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -26,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_QRcode, R.id.navigation_notifications, R.id.navigation_dbContrl
+                R.id.navigation_login, R.id.navigation_QRcode, R.id.navigation_notifications, R.id.navigation_dbContrl
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

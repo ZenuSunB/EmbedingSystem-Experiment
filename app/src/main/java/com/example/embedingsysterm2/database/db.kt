@@ -16,7 +16,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.embedingsysterm2.R
 import com.example.embedingsysterm2.databinding.DbContrlBinding
-import com.example.embedingsysterm2.ui.register.RegisterView
+import com.example.embedingsysterm2.databinding.QrUserGeneratorPopviewBinding
+import com.example.embedingsysterm2.date.user
+import com.example.embedingsysterm2.ui.popview.QrUserGeneratorView
+import com.example.embedingsysterm2.ui.popview.RegisterView
+import org.json.JSONObject
 
 
 class db :Fragment() {
@@ -50,7 +54,6 @@ class db :Fragment() {
 
         this.context?.let {
             val dbHelper = dbHelper(it, "UsersStore.db", 3)
-
             btnAddData.setOnClickListener {
                 val db = dbHelper.writableDatabase
                 val Values = ContentValues().apply {
@@ -68,9 +71,8 @@ class db :Fragment() {
             }
             btnDeleteData.setOnClickListener {
                 val db = dbHelper.writableDatabase
-                db.delete("Users", "name=?", arrayOf("The Da Vinci Code"))
+                db.delete("Users", null, null)
             }
-
             btnQueryData.setOnClickListener {
                 val db = dbHelper.writableDatabase
                 var queryList_str: MutableList<String> = arrayListOf()
@@ -80,6 +82,10 @@ class db :Fragment() {
                         var name: String = String()
                         var moblie: String = String()
                         var password: String = String()
+                        var uid:Int=-1;
+                        cursor.getColumnIndex("uid")?.let {
+                            uid = cursor.getInt(it)
+                        }
                         cursor.getColumnIndex("name")?.let {
                             name = cursor.getString(it)
                         }
@@ -89,7 +95,7 @@ class db :Fragment() {
                         cursor.getColumnIndex("mobile")?.let {
                             moblie = cursor.getString(it)
                         }
-                        queryList_str.add("name:" + name + "\nmoblie:"+moblie+"\npassword:" + password)
+                        queryList_str.add("{"+"\"uid\":\""+uid+"\",\n\"name\":\"" + name + "\",\n\"mobile\":\""+moblie+"\",\n\"password\":\"" + password+"\"}")
                     } while (cursor.moveToNext())
                 }
                 cursor.close()
@@ -100,8 +106,6 @@ class db :Fragment() {
                 )
                 queryList.setAdapter(adapter)
             }
-
-
             btnRegister.setOnClickListener {
                 val registerView = RegisterView()
                 activity?.let {
@@ -127,6 +131,23 @@ class db :Fragment() {
                         }
                     })
                     registerView.showAtLocation(
+                        root.findViewById(R.id.linearLayout),
+                        Gravity.CENTER,
+                        0,
+                        0
+                    )
+                }
+            }
+            queryList.setOnItemClickListener { adapterView, view, position, id ->
+                val listView = adapterView as ListView
+                val listAdapter = listView.adapter
+                val choosed: String = listAdapter.getItem(position)  as String
+                val obj=JSONObject(choosed)
+                var User:user=user(obj.getInt("uid"),obj.getString("name"),obj.getString("mobile"),obj.getString("password"))
+                val userQrCodePopView = QrUserGeneratorView()
+                activity?.let {
+                    userQrCodePopView.CreateRegisterPopWindow(it,choosed)
+                    userQrCodePopView.showAtLocation(
                         root.findViewById(R.id.linearLayout),
                         Gravity.CENTER,
                         0,
