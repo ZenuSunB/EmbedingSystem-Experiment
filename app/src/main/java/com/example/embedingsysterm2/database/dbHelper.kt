@@ -19,7 +19,8 @@ class dbHelper(var context: Context, name: String, version: Int) :
             "uid integer primary key autoincrement," +
             "name text," +
             "mobile text," +
-            "password text)"
+            "password text," +
+            "NFCmesg text)"
 
     private var createLoginHistory="create table LoginHistory (" +
             "hid integer primary key autoincrement," +
@@ -84,7 +85,7 @@ class dbHelper(var context: Context, name: String, version: Int) :
     public fun getUserLoginId(User:user):Int? {
         val db = this.writableDatabase
         val res = db.query(
-            "Users", arrayOf("uid", "password", "mobile", "name"),
+            "Users", arrayOf("uid", "password", "mobile", "name", "NFCmesg"),
             "name=? and password=?", arrayOf(User.name, User.password), null, null, null, null
         )
         if (res.moveToFirst())
@@ -108,5 +109,28 @@ class dbHelper(var context: Context, name: String, version: Int) :
             }
         }
         return User
+    }
+    public fun bindNFCmesg(User: user,NFCmesg:String):Int
+    {
+        val db = this.writableDatabase
+        val Values = ContentValues().apply {
+            put("NFCmesg", NFCmesg)
+        }
+        return db.update("Users", Values, "uid=?",arrayOf(User.Id.toString())).toInt()
+    }
+    public fun getUserFromNFCid(NFCid: String):Int?
+    {
+        val db = this.writableDatabase
+        val res = db.query(
+            "Users", arrayOf("uid", "password", "mobile", "name", "NFCmesg"),
+            "NFCmesg=?", arrayOf(NFCid), null, null, null, null
+        )
+        if (res.moveToFirst())
+        {
+            res.getColumnIndex("uid")?.let {
+                return res.getInt(it)
+            }
+        }
+        return null;
     }
 }

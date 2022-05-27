@@ -6,23 +6,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.FragmentActivity
+import com.example.embedingsysterm2.GlobalVariable.GlobalVariable
 import com.example.embedingsysterm2.R
+import com.example.embedingsysterm2.database.dbHelper
+import com.example.embedingsysterm2.date.user
+import com.example.embedingsysterm2.sensorSocket.NfcDetect
 import com.example.embedingsysterm2.zxing.encoding.EncodingHandler
 
 class QrUserGeneratorView : PopupWindow() {
     private var mContext: Context?=null
     lateinit var imageView:ImageView
+    lateinit var NFCbinderBtn:Button
     lateinit var view: View
 
-    public fun CreateRegisterPopWindow(mContext: FragmentActivity,contentString:String)
+    public fun CreateRegisterPopWindow(mContext: FragmentActivity,contentString:String,User: user)
     {
 
         this.mContext=mContext
-
         this.view = LayoutInflater.from(mContext).inflate(R.layout.qr_user_generator_popview,null)
         imageView=view.findViewById(R.id.qrCodeImage)
+        NFCbinderBtn=view.findViewById(R.id.NFCbinderBtn)
         imageView.setOnClickListener {
             dismiss()
+        }
+        NFCbinderBtn?.setOnClickListener {
+            val dbHelper = dbHelper(mContext, "UsersStore.db", 4)
+            dbHelper.bindNFCmesg(User,GlobalVariable.NFCid)
+            Toast.makeText(mContext, "NFC 绑定成功", Toast.LENGTH_SHORT).show()
         }
         if (contentString != "") {
             val qrCodeBitmap: Bitmap = EncodingHandler.createQRCode(contentString, 800)
@@ -45,8 +55,8 @@ class QrUserGeneratorView : PopupWindow() {
             var windowDPara=windowManger.defaultDisplay
             var windowPara=dialogWindow.attributes
 
-            this.height= RelativeLayout.LayoutParams.WRAP_CONTENT
-            this.width=(windowDPara.width*0.8).toInt()
+            this.height= RelativeLayout.LayoutParams.FILL_PARENT
+            this.width=RelativeLayout.LayoutParams.FILL_PARENT
 
             this.isFocusable=true
         }

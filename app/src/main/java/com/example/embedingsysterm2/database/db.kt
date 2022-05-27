@@ -53,13 +53,14 @@ class db :Fragment() {
         queryList = root.findViewById(R.id.querylist)
 
         this.context?.let {
-            val dbHelper = dbHelper(it, "UsersStore.db", 3)
+            val dbHelper = dbHelper(it, "UsersStore.db", 4)
             btnAddData.setOnClickListener {
                 val db = dbHelper.writableDatabase
                 val Values = ContentValues().apply {
                     put("name", "The Da Vinci Code")
                     put("mobile", "12345679")
                     put("password", "123456789")
+                    put("NFCmesg", "")
                 }
                 db.insert("Users", null, Values)
             }
@@ -82,6 +83,7 @@ class db :Fragment() {
                         var name: String = String()
                         var moblie: String = String()
                         var password: String = String()
+                        var NFCmesg: String = String()
                         var uid:Int=-1;
                         cursor.getColumnIndex("uid")?.let {
                             uid = cursor.getInt(it)
@@ -95,7 +97,14 @@ class db :Fragment() {
                         cursor.getColumnIndex("mobile")?.let {
                             moblie = cursor.getString(it)
                         }
-                        queryList_str.add("{"+"\"uid\":\""+uid+"\",\n\"name\":\"" + name + "\",\n\"mobile\":\""+moblie+"\",\n\"password\":\"" + password+"\"}")
+                        cursor.getColumnIndex("NFCmesg")?.let {
+                            NFCmesg = cursor.getString(it)
+                        }
+                        queryList_str.add("{"+"\"uid\":\""+uid+"\"," +
+                                "\n\"name\":\"" + name + "\"," +
+                                "\n\"mobile\":\""+moblie+"\"," +
+                                "\n\"password\":\"" + password+"\"," +
+                                "\n\"NFCmesg\":\""+NFCmesg+"\"}")
                     } while (cursor.moveToNext())
                 }
                 cursor.close()
@@ -121,6 +130,7 @@ class db :Fragment() {
                                 put("name", name)
                                 put("mobile", mobile)
                                 put("password", password1)
+                                put("NFCmesg", String())
                             }
                             db.insert("Users", null, Values)
                             Toast.makeText(this.context, "注册成功", Toast.LENGTH_LONG).show()
@@ -146,7 +156,7 @@ class db :Fragment() {
                 var User:user=user(obj.getInt("uid"),obj.getString("name"),obj.getString("mobile"),obj.getString("password"))
                 val userQrCodePopView = QrUserGeneratorView()
                 activity?.let {
-                    userQrCodePopView.CreateRegisterPopWindow(it,choosed)
+                    userQrCodePopView.CreateRegisterPopWindow(it,choosed,User)
                     userQrCodePopView.showAtLocation(
                         root.findViewById(R.id.linearLayout),
                         Gravity.CENTER,

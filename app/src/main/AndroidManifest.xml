@@ -31,7 +31,7 @@
         <activity
             android:configChanges="orientation|keyboardHidden"
             android:name="com.example.embedingsysterm2.zxing.activity.CaptureActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>

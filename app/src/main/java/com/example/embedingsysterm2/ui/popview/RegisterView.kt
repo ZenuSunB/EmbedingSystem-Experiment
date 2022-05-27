@@ -25,7 +25,6 @@ class RegisterView :PopupWindow () {
     {
 
         this.mContext=mContext
-
         this.view = LayoutInflater.from(mContext).inflate(R.layout.register_popview,null)
         name=view.findViewById(R.id.text_name)
         mobile=view.findViewById(R.id.text_mobile)

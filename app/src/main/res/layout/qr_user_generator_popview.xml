@@ -6,14 +6,25 @@
     <ImageView
         android:id="@+id/qrCodeImage"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/setbar_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/NFCbinderBtn"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <Button
+        android:id="@+id/NFCbinderBtn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="绑定NFC"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/qrCodeImage"
         app:layout_constraintLeft_toLeftOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
